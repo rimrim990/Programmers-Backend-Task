@@ -3,7 +3,7 @@ package project.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import project.user.UserDto;
+import project.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,12 +12,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class JsonUtilTest {
 
-    UserDto dto;
+    User dto;
     String json;
 
     @BeforeEach
     void before() {
-        dto = new UserDto(1L, "test", 2L);
+        dto = new User(1L, "test", 2L);
         json = "{" +
                 "\"userId\":1," +
                 "\"username\":\"test\"," +
@@ -32,7 +32,7 @@ class JsonUtilTest {
 
     @Test
     void 컬렉션_객체_직렬화() throws JsonProcessingException {
-        List<UserDto> list = new ArrayList<>();
+        List<User> list = new ArrayList<>();
         list.add(dto);
         String listJson = "[" + json + "]";
         assertEquals(listJson, JsonUtil.writeAsString(list));
@@ -40,7 +40,7 @@ class JsonUtilTest {
 
     @Test
     void 객체_역직렬화() throws JsonProcessingException {
-        UserDto res = JsonUtil.readObj(json, UserDto.class) ;
+        User res = JsonUtil.readObj(json, User.class) ;
         assertEquals(dto.getUserId(), res.getUserId());
         assertEquals(dto.getUsername(), res.getUsername());
         assertEquals(dto.getPostCount(), res.getPostCount());
@@ -48,10 +48,10 @@ class JsonUtilTest {
 
     @Test
     void 컬렉션_역직렬화() throws JsonProcessingException {
-        List<UserDto> list = new ArrayList<>();
+        List<User> list = new ArrayList<>();
         list.add(dto);
         String listJson = "[" + json + "]";
-        List<UserDto> res = JsonUtil.readList(listJson, UserDto.class);
+        List<User> res = JsonUtil.readList(listJson, User.class);
         for (int i = 0; i < list.size(); i++) {
             assertEquals(list.get(i).getUserId(), res.get(i).getUserId());
             assertEquals(list.get(i).getUsername(), res.get(i).getUsername());
