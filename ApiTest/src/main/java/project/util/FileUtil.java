@@ -8,9 +8,7 @@ import java.nio.file.Paths;
 
 public class FileUtil {
 
-    private static final Path ROOT_PATH = Paths.get("")
-            .toAbsolutePath()
-            .getParent();
+    private static final Path ROOT_PATH = Paths.get("");
 
     // file 에 문자열 작성
     public static void write(String dirPath, String fileName, String content) throws IOException {
@@ -31,6 +29,7 @@ public class FileUtil {
 
     // 디렉토리 생성
     private static void createDir(Path dirPath) throws IOException {
+        System.out.println(ROOT_PATH.toAbsolutePath());
         if (Files.isDirectory(dirPath)) return;
         Files.createDirectory(dirPath);
     }
