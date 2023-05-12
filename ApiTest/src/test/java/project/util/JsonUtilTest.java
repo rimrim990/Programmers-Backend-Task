@@ -3,6 +3,8 @@ package project.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import project.user.Role;
+import project.user.User;
 import project.user.UserDto;
 
 import java.util.ArrayList;
@@ -13,7 +15,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class JsonUtilTest {
 
     UserDto dto;
+    User user;
+
     String json;
+    String userJson;
 
     @BeforeEach
     void before() {
@@ -23,6 +28,12 @@ class JsonUtilTest {
                 "\"username\":\"test\"," +
                 "\"postCount\":2" +
                 "}";
+        user = new User(1L, "test", 2L, Role.ADMIN);
+        userJson = "{" +
+                    "\"username\":\"test\"," +
+                    "\"role\":\"admin\"," +
+                    "\"userId\":1," +
+                    "\"postCount\":2}";
     }
 
     @Test
@@ -57,5 +68,17 @@ class JsonUtilTest {
             assertEquals(list.get(i).getUsername(), res.get(i).getUsername());
             assertEquals(list.get(i).getPostCount(), res.get(i).getPostCount());
         }
+    }
+
+    @Test
+    void 이넘_직렬화() throws JsonProcessingException {
+        assertEquals(JsonUtil.writeAsString(user), userJson);
+    }
+
+    @Test
+    void 이넘_역직렬화() throws JsonProcessingException {
+        User res = JsonUtil.readObj(userJson, User.class);
+        assertEquals(user.getUserId(), res.getUserId());
+        assertEquals(user.getRole(), res.getRole());
     }
 }
