@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class JsonMapperTest {
+class JsonUtilTest {
 
     UserDto dto;
     String json;
@@ -27,7 +27,7 @@ class JsonMapperTest {
 
     @Test
     void 단일_객체_직렬화() throws JsonProcessingException {
-        assertEquals(json, JsonMapper.mapToJson(dto));
+        assertEquals(json, JsonUtil.writeAsString(dto));
     }
 
     @Test
@@ -35,12 +35,12 @@ class JsonMapperTest {
         List<UserDto> list = new ArrayList<>();
         list.add(dto);
         String listJson = "[" + json + "]";
-        assertEquals(listJson, JsonMapper.mapToJson(list));
+        assertEquals(listJson, JsonUtil.writeAsString(list));
     }
 
     @Test
     void 객체_역직렬화() throws JsonProcessingException {
-        UserDto res = JsonMapper.mapToObj(json, UserDto.class) ;
+        UserDto res = JsonUtil.readObj(json, UserDto.class) ;
         assertEquals(dto.getUserId(), res.getUserId());
         assertEquals(dto.getUsername(), res.getUsername());
         assertEquals(dto.getPostCount(), res.getPostCount());
@@ -51,7 +51,7 @@ class JsonMapperTest {
         List<UserDto> list = new ArrayList<>();
         list.add(dto);
         String listJson = "[" + json + "]";
-        List<UserDto> res = JsonMapper.mapToArr(listJson, UserDto.class);
+        List<UserDto> res = JsonUtil.readList(listJson, UserDto.class);
         for (int i = 0; i < list.size(); i++) {
             assertEquals(list.get(i).getUserId(), res.get(i).getUserId());
             assertEquals(list.get(i).getUsername(), res.get(i).getUsername());
